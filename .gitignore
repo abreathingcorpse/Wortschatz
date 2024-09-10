@@ -2,4 +2,4 @@
 *.vscode
 
 # Executable
-.out
+*.out
