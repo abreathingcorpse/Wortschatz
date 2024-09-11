@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <random>
 
 struct card {
     unsigned long ID;
@@ -51,7 +52,6 @@ int fill_deck(std::vector<card> &deck, std::string fileName, unsigned int number
         deck.push_back(currentCard);
     }
 
-
     csvFile.close();
 
     return 0;
@@ -61,14 +61,20 @@ int main() {
 
     std::vector<card> deck;
 
-    std::cout << deck.size() << std::endl;
-
     fill_deck(deck, "test.csv");
 
-    std::cout << deck.size() << std::endl;
-
-    std::cout << deck[1].ID << std::endl;
-    std::cout << deck[1].front << std::endl;
+    std::cout << "seed type: " << typeid(time(0)).name() << std::endl;
+    long seed = time(0);
+    std::cout << "seed type: " << typeid(seed).name() << std::endl;
+    std::cout << "seed: " << seed << std::endl;
+    // Since the engine generates the same sequence of numbers each time it's run
+    // both the engine and the distribution should be static objects in order to retain
+    // the state
+//    static std::default_random_engine random_engine(time(0));
+    static std::mt19937 random_engine(time(0)); // Uses the Mersenne Twister Engine instead of the default one
+    static std::uniform_int_distribution<unsigned> uniform_distribution(0,deck.size()-1);
+//    static std::uniform_int_distribution<unsigned> uniform_distribution(0,9);
+    std::cout << "random: " << uniform_distribution(random_engine) << std::endl;
 
     return 0;
 }
