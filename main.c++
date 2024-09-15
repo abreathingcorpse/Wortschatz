@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include <random>
+#include "game.h++"
 
 struct card {
     unsigned long ID;
@@ -63,9 +64,9 @@ int main() {
 
     fill_deck(deck, "test.csv");
 
-    std::cout << "seed type: " << typeid(time(0)).name() << std::endl;
+//    std::cout << "seed type: " << typeid(time(0)).name() << std::endl;
     long seed = time(0);
-    std::cout << "seed type: " << typeid(seed).name() << std::endl;
+//    std::cout << "seed type: " << typeid(seed).name() << std::endl;
     std::cout << "seed: " << seed << std::endl;
     // Since the engine generates the same sequence of numbers each time it's run
     // both the engine and the distribution should be static objects in order to retain
@@ -75,6 +76,9 @@ int main() {
     static std::uniform_int_distribution<unsigned> uniform_distribution(0,deck.size()-1);
 //    static std::uniform_int_distribution<unsigned> uniform_distribution(0,9);
     std::cout << "random: " << uniform_distribution(random_engine) << std::endl;
+
+    Game game;
+    game.run();
 
     return 0;
 }
