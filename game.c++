@@ -13,19 +13,22 @@ void Game::processEvents() {
 }
 
 void Game::update() {
-    // empty
+    mCharacter.mCharacterSprite.setPosition(sf::Vector2f(100.f,100.f));
 }
 
 void Game::render() {
     // empty for now
     mWindow.clear();
+    mWindow.draw(mCharacter.mCharacterSprite);
     mWindow.display();
 }
 
 void Game::run() {
+    mCharacter.loadSprite();
+
     while(mWindow.isOpen()) {
         processEvents();
-        // update();
+        update();
         render();
     }
 }

@@ -6,6 +6,8 @@
 #include <SFML/Graphics.hpp>
 #endif // SFML_H header guard
 
+#include "character.h++"
+
 class Game {
     public:
         Game(); // Default Constructor
@@ -19,6 +21,7 @@ class Game {
 
         // Private members
         sf::RenderWindow mWindow;
+        Character mCharacter;
 
 };
 
