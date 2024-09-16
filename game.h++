@@ -18,10 +18,15 @@ class Game {
         void processEvents();
         void update();
         void render();
+        void resizeToAspectRatio(float desired_aspect_ratio, float current_aspect_ratio);
 
         // Private members
         sf::RenderWindow mWindow;
-        Character mCharacter;
+        Character mPlayer;
+        Character mEnemy;
+        float mWindowWidth = 1920.f;
+        float mWindowHeight = 1080.f;
+        sf::View mView;
 
 };
 

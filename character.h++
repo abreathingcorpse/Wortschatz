@@ -6,9 +6,11 @@
 #include <SFML/Graphics.hpp>
 #endif // SFML_H header guard
 
+#include <string>
+
 class Character {
     public:
-        void loadSprite();
+        void loadSprite(std::string character_png);
         sf::Sprite mCharacterSprite;
     
     private:
