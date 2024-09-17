@@ -9,14 +9,14 @@
 #include <random>
 #include "game.h++"
 
-struct card {
-    unsigned long ID;
-    std::string front;
-    std::string back;
-    std::string track;
-    std::string correct_cnt;
-    std::string incorrect_cnt;
-};
+//struct card {
+//    unsigned long ID;
+//    std::string front;
+//    std::string back;
+//    std::string track;
+//    std::string correct_cnt;
+//    std::string incorrect_cnt;
+//};
 
 // We pass the deck by reference, since we want to modify the actual object and not just a copy
 int fill_deck(std::vector<card> &deck, std::string fileName, unsigned int numberOfColumns = 6) {
@@ -65,7 +65,7 @@ int main() {
 
     std::vector<card> deck;
 
-    fill_deck(deck, "test.csv");
+//    fill_deck(deck, "test.csv");
 
 //    std::cout << "seed type: " << typeid(time(0)).name() << std::endl;
     long seed = time(0);

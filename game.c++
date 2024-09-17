@@ -1,8 +1,69 @@
+#ifndef DEBUG_H
+#define DEBUG_H
+#include <iostream>
+#endif // DEBUG_H
+
 #include "game.h++"
+#include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 Game::Game() : mWindow(sf::VideoMode(1920,1080),
             "Wortshatz Spiel"),
-            mView(sf::FloatRect(0.f,0.f,mWindowWidth,mWindowHeight)) {}
+            mView(sf::FloatRect(0.f,0.f,mWindowWidth,mWindowHeight)) {
+                mCardShape.setSize(sf::Vector2f(1000.f,400.f));
+                mCardShape.setPosition(sf::Vector2f(350.f,500.f));
+            }
+
+void Game::loadFont() {
+    std::string pathToFontFile = "./NotoSans-Regular.ttf";
+    if (!mFont.loadFromFile(pathToFontFile))
+        std::cerr << "Unable to load the font." << std::endl;
+}
+
+int Game::fill_deck(std::string fileName, unsigned int numberOfColumns = 6) {
+    std::string line, value;
+    std::vector<std::string> fileValues;
+
+    std::fstream csvFile(fileName, std::fstream::in | std::fstream::out);
+
+    if (!csvFile) {
+        std::cerr << "Unable to open file!" << std::endl;
+        return EXIT_FAILURE; // preprocessor variable
+    }
+
+    while (std::getline(csvFile, line)) {
+
+        std::stringstream lineStream(line);
+
+        while (std::getline(lineStream, value, ',')) {
+            fileValues.push_back(value);
+        }
+    }
+
+    int numberOfRows = fileValues.size() / numberOfColumns;
+    // The loop begins at 1, since we are excluding the header
+    for (std::vector<card>::size_type i = 1; i < numberOfRows; i++) {
+        card currentCard;
+
+        // It's * i, since that's the row I'm getting the card from
+        currentCard.ID = std::stoul(fileValues[0+numberOfColumns*i]);
+        currentCard.front = fileValues[1+numberOfColumns*i];
+        currentCard.back = fileValues[2+numberOfColumns*i];
+        currentCard.track = fileValues[3+numberOfColumns*i];
+        currentCard.correct_cnt = fileValues[4+numberOfColumns*i];
+        currentCard.incorrect_cnt = fileValues[5+numberOfColumns*i];
+
+        mDeck.push_back(currentCard);
+    }
+
+    std::cout << mDeck[0].front << std::endl;
+
+    csvFile.close();
+
+    return 0;
+}
 
 void Game::resizeToAspectRatio(float desired_aspect_ratio, float current_aspect_ratio) {
     // Window is wider than it should
@@ -47,10 +108,21 @@ void Game::render() {
     mWindow.setView(mView);
     mWindow.draw(mPlayer.mCharacterSprite);
     mWindow.draw(mEnemy.mCharacterSprite);
+//    mWindow.draw(mDeck[0]);
+    mWindow.draw(mCardShape);
+    mWindow.draw(mCardText);
     mWindow.display();
 }
 
 void Game::run() {
+    loadFont();
+//    mTestText.setFillColor(sf::Color::Red);
+//    mTestText.setPosition(sf::Vector2f(10.f,10.f));
+    fill_deck("test.csv");
+    mCardText.setFont(mFont);
+    mCardText.setString(mDeck[0].front);
+    mCardText.setFillColor(sf::Color::Red);
+    mCardText.setPosition(sf::Vector2f(350.f,500.f));
     mPlayer.loadSprite("player.png");
     mEnemy.loadSprite("slime.png");
 
